@@ -1,15 +1,26 @@
-version: '3'
+version: "3.8"
+
 services:
-  db:
-    image: postgres:latest
-    container_name: architecture_db
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - postgres
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: architecture_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rits9200
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: architecture_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rits9200
     ports:
       - "5432:5432"
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    restart: unless-stopped
-
