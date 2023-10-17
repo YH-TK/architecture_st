@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: architecture_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rits9200
+
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./script:/docker-entrypoint-initdb.d   
+    environment:
+      POSTGRES_DB: architecture_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rits9200
+    ports:
+      - "5432:5432"
+volumes:
+    postgres:
+
